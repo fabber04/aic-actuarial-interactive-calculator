@@ -1,0 +1,19 @@
+Prompt we need to attempt 
+
+I need you to integrate a Gamma Generalized Linear Model (GLM) with a log link function into my existing software system as a live, self-updating pricing engine.
+The model must retrain automatically whenever new pricing data is added, hot-swap into the running application without downtime, and version every trained model so we can roll back if needed.
+
+The system must do the following:
+1.	Maintain a persistent data store that appends new pricing records without overwriting historical data. The target variable is price, which must always be strictly positive. Reject or flag any record where price is zero or negative before it enters the store.
+2.	Preprocess incoming data consistently with how the model was trained — same categorical encoding, same feature scaling, same log transformations on skewed inputs with a small constant added to avoid log of zero errors.
+3.	Retrain the Gamma GLM using the full historical dataset every time new data is appended. Use statsmodels GLM with family Gamma and a log link. Wrap this in a reusable retrain function that can be triggered by a data upload event, a database webhook, or a scheduled cron job.
+4.	Serialize the newly trained model using joblib after every retrain. Save it with a timestamp-based filename for versioning and also overwrite a fixed latest model file that the API always loads from.
+5.	Hot-swap the live model by reloading the latest serialized file into memory after each retrain, using a thread lock to prevent race conditions during the swap.
+6.	Expose a REST API endpoint that accepts product or transaction features as input, runs them through the same preprocessing pipeline, and returns a predicted price. The endpoint must always use the most recently trained model.
+7.	Monitor the live model by logging the mean deviance of predictions against actuals on each batch of new data. Alert if the incoming feature distributions drift significantly from the training distribution.
+
+Constraints:
+The target variable must always be strictly positive; build in validation at every entry point
+•	Preprocessing in the API must be identical to preprocessing at training time; use a shared pipeline object, not duplicated code
+•	The model must never be replaced in memory with an untrained or failed model; wrap retraining in error handling with fallback to the previous version
+•	Do not use ONNX or PMML; keep the stack in Python with statsmodels and joblib

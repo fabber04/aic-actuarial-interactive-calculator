@@ -1,0 +1,9 @@
+{
+  "holdout_rows": 35,
+  "scored_rows": 35,
+  "premium_mean_deviance": 183.3673786959463,
+  "holdout_mean_actual_premium": 1284.9677142857142,
+  "holdout_mean_predicted_premium": 1242.134813933667,
+  "holdout_mean_claim_amount": 57808.28571428572,
+  "scored_holdout": "C:\\Users\\user\\Documents\\Chewe\\AIC( Acturial Interactive Calculator)\\Datasets\\claims_holdout_scored.csv"
+}

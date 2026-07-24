@@ -1,0 +1,14 @@
+Metric,Value
+source_file,C:\Users\user\Documents\Chewe\AIC( Acturial Interactive Calculator)\archive\freMTPL2freq.csv
+policy_rows,678013
+total_exposure,358499.44546277856
+total_claims,36102.0
+portfolio_frequency,0.1007030846404707
+severity_source,constant
+calibration_factor,1.4531707263656386
+indicated_rate_per_exposure,219.5081619813688
+current_rate_proxy,300.0
+rate_change_pct,-0.26830612672877063
+freq_glm_aic,286702.705557232
+freq_glm_deviance,217293.67912974558
+sample_used,678013

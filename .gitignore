@@ -1,0 +1,49 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Tests / IDE
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cursor/
+.idea/
+.vscode/
+*.swp
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Live engine artifacts (regenerable)
+pricing_data/
+pricing_models/
+*.joblib
+
+# Large / generated model outputs
+archive/freMTPL2freq_glm_priced.csv
+archive/*.rar
+archive.zip
+Datasets/**/motor_clean.csv
+Datasets/**/motor_holdout_scored.csv
+Datasets/**/splits/
+Datasets/claims_splits/
+Datasets/claims_clean.csv
+Datasets/claims_holdout_scored.csv
+Datasets/insurance_claims_scored.csv
+Datasets/result/
+
+# Local clutter / non-source
+Xtra-Theme-master.zip
+*.rar
+
+# Optional: large copyrighted textbook (keep local)
+Introduction to Ratemaking and Loss Reserving for Property and Casualty Insurance (Robert Brown, W. Sc.pdf

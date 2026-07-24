@@ -1,0 +1,20 @@
+[
+  {
+    "fold": 1,
+    "train_rows": 52,
+    "valid_rows": 28,
+    "mean_deviance": 8.181689139956264
+  },
+  {
+    "fold": 2,
+    "train_rows": 54,
+    "valid_rows": 26,
+    "mean_deviance": 5.759521239348775
+  },
+  {
+    "fold": 3,
+    "train_rows": 54,
+    "valid_rows": 26,
+    "mean_deviance": -14.866372021702905
+  }
+]

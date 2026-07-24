@@ -1,0 +1,12 @@
+{
+  "holdout_rows": 35815,
+  "premium_mean_deviance": 72.74373347106237,
+  "batch_glm": {
+    "freq_aic": 85034.6283015483,
+    "freq_deviance": 58672.1622702914,
+    "sev_fitted": true,
+    "holdout_mean_pure_premium": 912094.4527868922,
+    "holdout_mean_actual_price": 311.72124640513755
+  },
+  "scored_holdout": "C:\\Users\\user\\Documents\\Chewe\\AIC( Acturial Interactive Calculator)\\Datasets\\Dataset of an actual motor vehicle insurance portfolio\\motor_holdout_scored.csv"
+}
