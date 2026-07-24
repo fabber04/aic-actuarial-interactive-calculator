@@ -2,6 +2,16 @@
 
 Python toolkit for **property & casualty ratemaking**, **loss reserving**, and **GLM-based motor pricing**. Built around methods from *Introduction to Ratemaking and Loss Reserving for Property and Casualty Insurance* (Brown & Gottlieb), with extensions for live Gamma GLM pricing and real portfolio datasets.
 
+**AIC Platform v1.0 · Release Candidate 1 — submission mode.**  
+Allowed changes: bug fixes · presentation · reviewer wording. No new layers/products.  
+Changelog: [`CHANGELOG.md`](CHANGELOG.md) · Evolution: [`docs/EVOLUTION.md`](docs/EVOLUTION.md) · Roadmap: [`docs/ROADMAP.md`](docs/ROADMAP.md)  
+Judge pack: [`docs/submission/`](docs/submission/) · Paper: [`docs/research/paper.md`](docs/research/paper.md)  
+Evidence: `python -m aic.validation` · `python -m aic.benchmark --write-report` · [`docs/governance/`](docs/governance/). CT Flex quotes:
+
+```bash
+python -c "from aic.orchestrator import AICPlatform; import json; print(json.dumps(AICPlatform().quote_ctflex({'occupation':'Courier','transaction_count':8,'transactions':[10,12,8,15,14,11,9,13]}), indent=2))"
+```
+
 ---
 
 ## Features
@@ -38,14 +48,14 @@ Dependencies: `pandas`, `numpy`, `statsmodels`, `patsy`, `joblib`, `fastapi`, `u
 python engine_model.py
 ```
 
-Or double-click `run_engine.bat`.
+Or double-click: `scripts\run_engine.bat`.
 
 Self-check:
 
 ```bash
 python engine_model.py verify
 # or
-verify.bat
+scripts\verify.bat
 ```
 
 ### 2. freMTPL batch GLM pricing
@@ -55,7 +65,7 @@ python fremtpl_glm.py archive/freMTPL2freq.csv --out-dir archive
 python fremtpl_glm.py archive/freMTPL2freq.csv --sev archive/freMTPL2sev.csv --out-dir archive
 ```
 
-Or: `run_glm.bat archive\freMTPL2freq.csv`
+Or: `scripts\run_glm.bat archive\freMTPL2freq.csv`
 
 Outputs in `archive/`: `*_glm_priced.csv`, `*_glm_coefficients.csv`, `*_glm_summary.csv`.
 
@@ -86,59 +96,62 @@ See `Datasets/insurance_claims_README.md`.
 ### 5. Run tests
 
 ```bash
-python -m pytest test_engine_model.py test_fremtpl_glm.py test_portfolio_motor.py -v
+python -m pytest tests -v
 ```
 
-Or: `run_tests.bat`
+Or: `scripts\run_tests.bat`
 
 ### 6. CT Flex product slice (gig / microinsurance)
 
-AIC covers the full actuarial toolkit. **CT Flex only consumes this slice** — credibility underwriting, Income/Health/Life class rates, trip PAYE, and portfolio KPIs — via `ct_flex_product.py` on top of `engine_model.CredibilityParams`.
+AIC covers the full actuarial toolkit. **CT Flex only consumes this slice** — credibility underwriting, Income/Health/Life class rates, trip PAYE, and portfolio KPIs — via `aic/ct_flex_product.py` on top of `aic.engine_model.CredibilityParams`.
 
 ```bash
 python ct_flex_api.py --port 8000
 # or
-serve_ct_flex.bat
+scripts\serve_ct_flex.bat
 ```
 
 | Endpoint | Purpose |
 |----------|---------|
 | `GET /health` | Liveness |
 | `GET /ct-flex/capabilities` | Products + class rates |
-| `POST /ct-flex/underwrite` | Worker alt-data → premium + factors |
+| `POST /ct-flex/underwrite` | **Platform v2** Income quote (camelCase); Health/Life → v1 |
+| `POST /ct-flex/underwrite/v1` | Legacy product-slice dual-run |
+| `POST /ct-flex/quote` | Raw orchestrator JSON |
 | `POST /ct-flex/trip-premium` | Pay-as-you-earn split |
 | `POST /ct-flex/portfolio` | Admin portfolio KPIs |
 
-CT Flex Vite proxies `/api/aic` → this service. Other AIC APIs (GLM `/predict`, reserving demos) stay separate.
+Add `?dual=1` on underwrite to attach `legacyCompare`. CT Flex Vite proxies `/api/aic` → this service.
 
 ---
 
 ## Project structure
 
 ```
-AIC (Actuarial Interactive Calculator)/
-├── engine_model.py          # Ratemaking & reserving core
-├── ct_flex_product.py       # CT Flex product slice (uses engine_model only)
-├── ct_flex_api.py           # FastAPI for CT Flex underwrite / PAYE / portfolio
-├── fremtpl_glm.py           # GLM pricing + live engine CLI & API
-├── portfolio_motor.py       # EU motor portfolio prep / CV / fit / deploy
-├── claims_us.py             # US insurance_claims.csv workflow
-├── model_verification.py    # Algebraic checks
-├── archive/                 # freMTPL sample data & batch outputs
-├── Datasets/
-│   ├── insurance_claims.csv
-│   └── Dataset of an actual motor vehicle insurance portfolio/
-│       ├── Motor vehicle insurance data.csv
-│       ├── Descriptive of the variables.xlsx
-│       ├── motor_clean.csv, splits/, scored outputs
-│       └── README.md
-├── pricing_data/            # Append-only pricing stores (per profile)
-├── pricing_models/          # Versioned joblib artifacts (per profile)
-├── test_*.py
-├── run_engine.bat
-├── run_glm.bat
-├── run_tests.bat
-└── requirements.txt
+AIC/
+├── README.md
+├── requirements.txt
+├── engine_model.py          # thin CLI → aic.engine_model
+├── fremtpl_glm.py           # thin CLI → aic.fremtpl_glm
+├── ct_flex_api.py           # thin CLI → aic.api.ct_flex
+├── aic/                     # all library code
+│   ├── engine_model.py      # classical ratemaking & reserving
+│   ├── fremtpl_glm.py       # GLM + live pricing engine
+│   ├── portfolio_motor.py   # EU motor portfolio workflow
+│   ├── claims_us.py         # US claims workflow
+│   ├── ct_flex_product.py   # CT Flex product slice
+│   ├── model_verification.py
+│   ├── orchestrator.py      # Platform v2 quote pipeline
+│   ├── api/                 # FastAPI apps
+│   ├── contracts/           # shared data objects
+│   ├── core/                # credibility, risk, explainability
+│   ├── products/ctflex/     # adapters & rules
+│   └── decision/
+├── tests/
+├── docs/
+├── scripts/                 # .bat helpers
+├── archive/                 # freMTPL sample data
+└── Datasets/                # portfolio & claims CSVs
 ```
 
 ---

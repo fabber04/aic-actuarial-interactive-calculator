@@ -1,0 +1,27 @@
+# Figure 7 — Module Dependency (package view)
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"arial","fontSize":"13px","lineColor":"#475569"}}}%%
+flowchart TB
+  classDef core fill:#DCEAF7,stroke:#1E3A5F,color:#0F172A,stroke-width:1.2px
+  classDef prod fill:#E7F0E7,stroke:#2F5D3A,color:#0F172A,stroke-width:1.2px
+  classDef evid fill:#F4EDE0,stroke:#6B4F2A,color:#0F172A,stroke-width:1.2px
+
+  products[aic.products]:::prod
+  features[aic.features]:::core
+  cred[aic.core.credibility]:::core
+  risk[aic.core.risk_engine]:::core
+  price[aic.core.pricing]:::core
+  decision[aic.decision]:::prod
+  explain[aic.core.explainability]:::prod
+  orch[aic.orchestrator]:::prod
+  val[aic.validation]:::evid
+  bench[aic.benchmark]:::evid
+
+  products --> features
+  orch --> products & features & cred & risk & price & decision & explain
+  val --> orch
+  bench --> orch
+```
+
+**Caption.** The orchestrator composes production layers; validation and benchmark suites consume the same public pipeline used by the API.

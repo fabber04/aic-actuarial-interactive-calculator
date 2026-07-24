@@ -1,0 +1,26 @@
+# Figure 3 — Credibility Framework
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"arial","fontSize":"14px","lineColor":"#475569"}}}%%
+flowchart TB
+  classDef data fill:#E8EEF4,stroke:#334155,color:#0F172A,stroke-width:1.5px
+  classDef core fill:#DCEAF7,stroke:#1E3A5F,color:#0F172A,stroke-width:1.5px
+  classDef future fill:#F8FAFC,stroke:#94A3B8,color:#64748B,stroke-width:1.2px,stroke-dasharray: 4 3
+
+  FV[FeatureVector]:::data
+  CTX[CredibilityContext]:::core
+  IF[CredibilityEngine interface]:::core
+  BS[Buhlmann-Straub v1.0]:::core
+  BJ[Buhlmann-Jewell future]:::future
+  BY[Bayesian future]:::future
+  RES[CredibilityResult]:::core
+  META[Class / drivers / metadata]:::core
+
+  FV --> CTX --> IF
+  IF --> BS
+  IF -.-> BJ
+  IF -.-> BY
+  BS --> RES --> META
+```
+
+**Caption.** Credibility answers one question: individual versus collective weight. Context excludes occupation risk and commercial premiums. Dashed nodes are extension points, not v1.0 deliverables.

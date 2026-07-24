@@ -1,0 +1,27 @@
+# Figure 6 — CT Flex Prototype vs AIC Comparison
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"arial","fontSize":"13px","lineColor":"#475569"}}}%%
+flowchart TB
+  classDef proto fill:#F1F5F9,stroke:#64748B,color:#0F172A,stroke-width:1.5px
+  classDef aic fill:#DCEAF7,stroke:#1E3A5F,color:#0F172A,stroke-width:1.5px
+
+  subgraph P[CT Flex prototype]
+    P1[Transaction count]:::proto
+    P2[Fixed bps factors]:::proto
+    P3[Premium rate]:::proto
+    P1 --> P2 --> P3
+  end
+
+  subgraph A[AIC platform]
+    A1[Adapter + series]:::aic
+    A2[AKL]:::aic
+    A3[Credibility]:::aic
+    A4[Risk]:::aic
+    A5[Pricing]:::aic
+    A6[Decision + explain]:::aic
+    A1 --> A2 --> A3 --> A4 --> A5 --> A6
+  end
+```
+
+**Caption.** The prototype proved PAYG feasibility with classical concepts tightly coupled in one calculator. AIC preserves the methodology while separating concerns into reusable, governed layers. The benchmark evaluates systems capability—not language choice and not predictive superiority.

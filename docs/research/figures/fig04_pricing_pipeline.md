@@ -1,0 +1,19 @@
+# Figure 4 — Risk → Pricing → Decision Pipeline
+
+```mermaid
+%%{init: {"theme":"base","themeVariables":{"fontFamily":"arial","fontSize":"14px","lineColor":"#475569"}}}%%
+flowchart LR
+  classDef core fill:#DCEAF7,stroke:#1E3A5F,color:#0F172A,stroke-width:1.5px
+  classDef prod fill:#E7F0E7,stroke:#2F5D3A,color:#0F172A,stroke-width:1.5px
+
+  RR["RiskResult E(loss)"]:::core
+  PP[Pure premium]:::core
+  TP["Technical premium + loads"]:::core
+  CP["Indicated commercial"]:::core
+  DE["Decision Engine PAYG / bind-refer"]:::prod
+  OUT[Product outcome]:::prod
+
+  RR --> PP --> TP --> CP --> DE --> OUT
+```
+
+**Caption.** Actuarial pricing ends at indicated commercial premium. Product mechanics (pay-as-you-earn collection, approval thresholds) belong in the Decision Engine so the same technical premium can serve multiple products.
